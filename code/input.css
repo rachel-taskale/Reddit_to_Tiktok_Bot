@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.reddit{
+    background-color: #ffafcc66;
+}
+
+.gpt-3{
+    background-color: #a2d2ff66;
+}
+
+.title{
+    text-align: center;
+}
+
+.subtitle{
+    font-size: smaller;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+
+.border{
+    border:1px solid black;
+}
+
+.emoji{
+    color: transparent;  
+    text-shadow: 0 0 0 red;
+
+}
+
+.video{
+    height: 30vh;
+}
+
+.emoji-group{
+    position:absolute;
+    left:5px;
+    bottom:10px;
+}
+
+video{
+    position:relative;
+    width:2.7in;
+    left:6vw;
+    bottom:150vh;
+
+}
+
+.phone-outline{
+    height: 5.81in;
+    width: 2.81in;
+    border-radius: 20px;
+    border:1px solid black
+}
+
+
+.center {
+    margin: auto;
+    width: 30%;
+    /* border: 3px solid green; */
+    padding: 10px;
+  }
+
+
+  .black-square{
+
+    position:relative;
+    left:5.6vw;
+    bottom:92vh;
+    border-radius: 30px;
+    width:2.71in;
+    height:5.8in;
+    background-color: black;
+  }

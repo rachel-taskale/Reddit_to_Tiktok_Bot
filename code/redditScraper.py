@@ -1,22 +1,30 @@
-# import pandas as pd
+#!/usr/bin/env python3
 from os import lseek
+from random import random
 import praw
 from gtts import gTTS
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 from moviepy.editor import *
 from string import ascii_letters
+from flask import Flask, request
+app= Flask(__name__)
+
+
 
 
 
 class Scraper:
-    def __init__(self):
-        pass
-
-    def __init__(self, url):
-        self.set_up_reddit()
-        self.manual_submission(url)
-        pass
+    def __init__(self, sub, isReddit, title):
+        if isReddit:
+            self.set_up_reddit()
+            self.manual_submission(sub)
+            self.relative_path = ''
+        else:
+            print(sub)
+            print(title)
+            self.gpt_3_choice(sub, title)
+    
 
 
     # load env creds
@@ -35,8 +43,10 @@ class Scraper:
     # Use praw to get access to reddit
     def set_up_reddit(self):
         cred = self.load_creds('.env')
-        client_id = cred["CLIENT_ID"]
-        client_secret=cred["CLIENT_SECRET"]
+        # client_id = cred["CLIENT_ID"]
+        client_id = ''
+        # client_secret=cred["CLIENT_SECRET"]
+        client_secret = ''
         user_agent = "Scraper 1.0 by /u/Candid-Cantaloupe-24"
         self.reddit = praw.Reddit(
             client_id =  client_id,
@@ -59,6 +69,7 @@ class Scraper:
     def convert_description(self, text, sub_id):
         url = './assets/audio/'
         size, i= len(text), 0
+        print(size)
         m = []
         part = 0
         while i < size:
@@ -79,11 +90,12 @@ class Scraper:
     # Generate subclip
     def generate_clip(self, text, audio_url, sub_id, num):
         # Static variables to fit tiktok size window
+        print(text)
         width = 800
         height = 512
         # Create new image to write text
         img = Image.new('RGB', (width, height))
-        font = ImageFont.truetype(font='SourceCodePro-Bold.ttf', size=24)
+        font = ImageFont.truetype(font='./assets/SourceCodePro-Bold.ttf', size=24)
         imgDraw = ImageDraw.Draw(img)
         avg_char_width = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
         max_char_count = int(width * .618 / avg_char_width)
@@ -105,6 +117,7 @@ class Scraper:
             audio = [audio_seg]
             # generate description clips and add to array
             for i in range(len(description_text_ref)):
+                print('in loop: ', description_text_ref[i][0])
                 video_clip, audio_clip = self.generate_clip(description_text_ref[i][0], description_text_ref[i][1], sub_id, i)
                 clips.append(video_clip)
                 audio.append(audio_clip)
@@ -115,7 +128,8 @@ class Scraper:
             concat_video_clip.audio = concat_audio
             # Write to mp4 file
             concat_video_clip.write_videofile('./assets/videos/'+sub_id+'_final.mp4', fps=24)
-            return True
+            self.relative_path= '/assets/videos/' + sub_id + '_final.mp4'
+            return './assets/videos/'+sub_id+'_final.mp4', 
         except Exception as e:
             raise Exception('Could not make video :(')
 
@@ -124,11 +138,29 @@ class Scraper:
     def manual_submission(self, url):
         sub = self.reddit.submission(url=url)
         title =sub.title.replace('fuck', 'duck').replace('dick', 'd').replace('aita', 'am I the a-hole')
+        print(title)
         description = sub.selftext.replace('fuck', 'duck').replace('dick', 'd').split(' ')
         self.convert_title(title, sub.id)
         description_text_map = self.convert_description(description, sub.id)  
-        return self.generate_video(title, sub.id, description_text_map)
-    
+        video_url = self.generate_video(title, sub.id, description_text_map)
+        return video_url
 
-new_scrape = Scraper('https://www.reddit.com/r/AmItheAsshole/comments/wafrdc/aita_for_saying_that_it_is_fucking_weird_that_my/')
-print(new_scrape)
+
+    def get_url(self):
+        print(self.relative_path)
+        return self.relative_path
+
+
+    def gpt_3_choice(self, story, title):
+        num=0
+        title_desc = self.convert_title(title, 'gpt3')
+        story_des = self.convert_description(story, 'gpt3')
+        print(story_des)
+        video_url = self.generate_video(title_desc, 'gpt3', story_des )
+        return video_url
+
+
+
+if __name__ == "__main__":
+    url = input("Enter a reddit post\n")
+    x = Scraper(url, True, None)

@@ -35,8 +35,15 @@
 }
 
 .emoji{
+    /* position:fixed; */
     color: transparent;  
-    text-shadow: 0 0 0 red;
+    text-shadow: 0 0 0 #ffafcc;
+}
+
+
+.pink{
+    color: transparent;  
+    text-shadow: 0 0 0 #ffafcc;
 
 }
 
@@ -83,4 +90,9 @@ video{
     width:2.71in;
     height:5.8in;
     background-color: black;
+  }
+
+
+  .rounded-sm{
+    border-radius: 20px;
   }

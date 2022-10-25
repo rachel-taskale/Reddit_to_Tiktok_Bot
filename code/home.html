@@ -4,94 +4,70 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Tiktok Videos</title>
-    <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" /> -->
     <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
     <!-- <link href="/dist/output.css" rel="stylesheet"> -->
     <link href="input.css" rel="stylesheet">
-    <!-- <py-env>
+    <py-env>
         - paths:
-          - /redditScraper.py
-      </py-env> -->
+          -/redditScraper.py
+      </py-env>
   </head>
   
   <body class="">
     <div class="emoji-group">
-        <p class="emoji">✧</p>
-        <p class="emoji">✧</p>
+        <p class="emoji pink">✧</p>
+        <p class="emoji purple">✧</p>
     </div>
 
     <h1 class="title">Generate Tiktok Storytime Videos</h1>
-
     <div class="flex-container">
-
-    <div class="flex-child reddit">
-        <!-- <form class='title' onsubmit="return false">
-            <h2>Straight from Reddit</h2>
-            <label>Enter a URL</label>
-            <input type="text" id='url' name='url'/>
-            <input pys-onClick="sub" type="submit"  value="submit">
-        </form> -->
-        <form onsubmit="return false">
-            <label for="name">Reddit URL:</label><br>
-            <input type="text" id="name" name="name" value="Ethan Hunt"><br>
-            <input pys-onClick="sub" type="submit" id="btn-form" value="submit">
-    
-    
+    <div class="flex-child reddit rounded-sm">
+        <form class='title'onsubmit="return false">
+            <h2>Reddit</h2>
+            <label for="url">Enter URL:</label>
+            <input type="text" id="url" name="url" value="">
+            <input pys-onClick="sub" type="submit" id="btn-form" value="Submit">
         </form> 
-        <!-- <div > -->
-            
-        <!-- </div> -->
+        <!-- <p>Output:</p> -->
+        <!-- <p id = 'output'></p> -->
         <py-script>
-
+            <!-- from redditScraper import Scraper -->
             def sub(*args,**kwargs):
                 result_place = Element('output')
-                result_place.write(f"{Element('name').value} is a good human from {Element('countries').value}")
+                temp = Scraper(Element('url').value, True, None)
+                result_place.write(f"<video src=temp></video>")
         
         </py-script>
     </div>
 
 
-    <div class="flex-child gpt-3">
+    <div class="flex-child gpt-3 rounded-sm">
         <form class="title" onsubmit="return false">
             <h2 >GPT-3</h2>
             <label>Enter a storyline</label>
-            <input/>
+            <textarea></textarea>
             <button>Submit</button>
             <p class="subtitle">Try: "Create a story where a husband cheats on his wife with a "</p>
             
         </form>
-        <pyscript>
-            from redditScraper import Scraper
-            <!-- pyscript.write() -->
-        </pyscript>
+        
+        <py-script>
+            <!-- from redditScraper import Scraper -->
+            
+
+            
+        </py-script>
     </div>
 </div>
 <div class="video">
-    <h2 class="title">This is where video will go</h2>
     <div class="center">
         <image src="./styles/image-removebg-preview (1).png">
             <div class="black-square"></div>
-            <video class="video">
+            <video class="video" autoplay>
                 <source src="./assets/videos/wafrdc_final.mp4" type="video/mp4">
             </video>
-
-
         </image>
-
     </div>
-
-</div>
-<!-- <div class="video">
-    
-</div> -->
-
-
-<div class="suggestions">
-    <h3 class="title">If you have any storyline suggestions please feel free to leave them below</h3>
-
-    
-
-
 </div>
   </body>
 
